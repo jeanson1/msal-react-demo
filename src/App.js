@@ -1,3 +1,6 @@
+// https://www.youtube.com/watch?v=7oPSL5wWeS0
+// Using MSAL.js to integrate React Single-page applications with Azure Active Directory – July 2022
+
 import Grid from "@mui/material/Grid";
 import { PageLayout } from "./components/PageLayout";
 import { Routes, Route } from "react-router-dom";
