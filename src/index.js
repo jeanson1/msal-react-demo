@@ -7,7 +7,7 @@ import { theme } from "./styles/theme";
 import { BrowserRouter } from "react-router-dom";
 
 import App from "./App";
-import { PublicClientApplication } from "@azure/msal-browser";
+import { PublicClientApplication, EventType } from "@azure/msal-browser";
 
 const pca = new PublicClientApplication({
   auth: {
@@ -16,6 +16,14 @@ const pca = new PublicClientApplication({
       "https://login.microsoftonline.com/6ca92191-baee-4ed3-abe4-0d8d6de60e70",
     redirectUri: "http://localhost:3000", // Your redirect URI
   },
+});
+
+// on ajoute cet événement quand le user s'est correctement loggué
+pca.addEventCallback((event) => {
+  if (event.eventType === EventType.LOGIN_SUCCESS) {
+    console.log(event);
+    pca.setActiveAccount(event.payload.account);
+  }
 });
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
