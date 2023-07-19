@@ -9,9 +9,10 @@ import { PageLayout } from "./components/PageLayout";
 import { Routes, Route } from "react-router-dom";
 
 import { Home } from "./pages/Home";
-import { Profile } from "./pages/Profile";
+import { ProfileData } from "./pages/ProfileData";
 
-import { MsalProvider } from "@azure/msal-react";
+import { MsalProvider, useMsal, useIsAuthenticated } from "@azure/msal-react";
+import { useEffect } from "react";
 
 function App({ msalInstance }) {
   return (
@@ -26,10 +27,24 @@ function App({ msalInstance }) {
 }
 
 const Pages = () => {
+  const { instance } = useMsal() ;
+  const isAuthenticated = useIsAuthenticated() ;
+
+  useEffect(() => {
+    if(!isAuthenticated ){
+      instance.ssoSilent({
+        scopes: ["user.read"],
+        loginHint: ""
+      }).then((response) => {
+        instance.setActiveAccount(response.account) ;
+      }).catch((error) => console.log(error))
+    }
+  },[])
+
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/profile" element={<Profile />} />
+      <Route path="/profileData" element={<ProfileData />} />
     </Routes>
   );
 };

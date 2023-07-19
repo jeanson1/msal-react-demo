@@ -16,6 +16,18 @@ const pca = new PublicClientApplication({
       "https://login.microsoftonline.com/6ca92191-baee-4ed3-abe4-0d8d6de60e70",
     redirectUri: "http://localhost:3000", // Your redirect URI
   },
+  cache: {
+    cacheLocation: 'sessionStorage',
+    storeAuthStateInCookie: false,
+  },
+  system: {
+    loggerOptions: {
+      loggerCallback: (level, message, containsPii) => {
+        console.log(message)
+      },
+      logLevel: "Info",
+    }
+  }
 });
 
 // on ajoute cet événement quand le user s'est correctement loggué
